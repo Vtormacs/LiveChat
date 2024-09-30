@@ -1,5 +1,6 @@
+const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';  // Escolhe o protocolo correto (wss:// para HTTPS)
 const stompClient = new StompJs.Client({
-    brokerURL: 'ws://' + window.location.host + '/buildrun-livechat-websocket'
+    brokerURL: protocol + window.location.host + '/buildrun-livechat-websocket'
 });
 
 stompClient.onConnect = (frame) => {
