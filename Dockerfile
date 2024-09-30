@@ -1,10 +1,16 @@
-FROM maven:3.8.1-openjdk-21 AS build
-WORKDIR /app
+FROM ubuntu:latest AS build
+
+RUN apt-get update
+RUN apt-get install openjdk-21-jdk -y
 COPY . .
+
+RUN apt-get install maven -y
 RUN mvn clean install
 
 FROM openjdk:21-slim
-WORKDIR /app
+
 EXPOSE 5000
-COPY --from=build /app/target/livechatms-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+COPY --from=build /target/livechatms-0.0.1-SNAPSHOT.jar app.jar
+
+ENTRYPOINT [ "java", "-jar", "app.jar" ]
